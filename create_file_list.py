@@ -1,13 +1,14 @@
+import settings
 import glob
 import openpyxl
 from openpyxl.styles.borders import Border, Side
 from openpyxl.styles import PatternFill
 
 # 定数
-BOOK_TITLE = "./test.xlsx"      # ファイル名      
-SHEET_TITLE = "file_list"       # シート名
-ROW_INI = 1                     # 行の初期位置
-COL_INI = 1                     # 列の初期位置
+BOOK_TITLE  = settings.book_title       # ファイル名
+SHEET_TITLE = settings.sheet_title      # シート名
+ROW_INI     = settings.row_ini          # 行の初期位置
+COL_INI     = settings.col_ini          # 列の初期位置
 
 # エクセルファイルの作成
 book = openpyxl.Workbook()      # 新規Bookの作成
@@ -29,11 +30,11 @@ for file in files:
     file = file.split("/")      # Mac
 
     # ファイルがdesktop.iniの場合は書き出さない
-    if file[-1] != "desktop.ini" :
+    if file[-1] != "desktop.ini":
         for i, f_name in enumerate(file):
             if len(pre_file) == 0 or i >= len(pre_file) or file[i] != pre_file[i]:
                 sheet.cell(row=row, column=col).value = f_name
-                    
+
             col += 1    # 次の列に移動
 
         pre_file = file
@@ -44,22 +45,25 @@ for file in files:
 print(sheet.max_row)
 
 
-for row in range(ROW_INI,sheet.max_row + 1) :
+for row in range(ROW_INI, sheet.max_row + 1):
     flag = 0
-    
-    for col in range(COL_INI, 10) :
+
+    for col in range(COL_INI, 10):
 
         if (sheet.cell(row=row, column=col).value != None):
-            sheet.cell(row=row, column=col).border = Border(top=Side(style='thin', color='000000'), left=Side(style='thin', color='000000'))
-            
+            sheet.cell(row=row, column=col).border = Border(top=Side(
+                style='thin', color='000000'), left=Side(style='thin', color='000000'))
+
             if col != 1:
-                for col_i in range(col-1, 0, -1) :
-                    sheet.cell(row=row, column=col_i).border = Border(left=Side(style='thin', color='000000'))
+                for col_i in range(col-1, 0, -1):
+                    sheet.cell(row=row, column=col_i).border = Border(
+                        left=Side(style='thin', color='000000'))
 
             flag = 1
-        
-        elif (flag == 1) :
-            sheet.cell(row=row, column=col).border = Border(top=Side(style='thin', color='000000'))
+
+        elif (flag == 1):
+            sheet.cell(row=row, column=col).border = Border(
+                top=Side(style='thin', color='000000'))
 
 # 背景色
 fill = PatternFill(patternType='solid', fgColor='ffffff')
