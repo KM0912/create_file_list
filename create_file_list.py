@@ -18,14 +18,6 @@ sheet.title = SHEET_TITLE       # シートのタイトル設定
 row = ROW_INI
 col = COL_INI
 
-# 罫線(外枠)を設定
-border = Border(top=Side(style='thin', color='000000'), 
-                bottom=Side(style='thin', color='000000'), 
-                left=Side(style='thin', color='000000'),
-                right=Side(style='thin', color='000000')
-)
-
-
 # 比較用のリストを作成
 pre_file = []
 
@@ -33,26 +25,14 @@ pre_file = []
 files = glob.glob("**", recursive=True)
 
 for file in files:
-    file = file.split("\\")
+    # file = file.split("\\")   # Windows
+    file = file.split("/")      # Mac
 
     # ファイルがdesktop.iniの場合は書き出さない
     if file[-1] != "desktop.ini" :
         for i, f_name in enumerate(file):
             if len(pre_file) == 0 or i >= len(pre_file) or file[i] != pre_file[i]:
                 sheet.cell(row=row, column=col).value = f_name
-                # sheet.cell(row=row, column=col).border = Border(top=Side(style='thin', color='000000'), left=Side(style='thin', color='000000'))
-
-                # for col_i in range(col + 1, 10) :
-                #     sheet.cell(row=row, column=col_i).border = Border(top=Side(style='thin', color='000000'))
-            
-
-        # for i, f_name in enumerate(file):
-        #     if len(pre_file) != 0 and i < len(pre_file) :
-        #         if file[i] != pre_file[i] :
-        #             sheet.cell(row=row, column=col).value = f_name
-        #     else :
-        #             sheet.cell(row=row, column=col).value = f_name
-
                     
             col += 1    # 次の列に移動
 
