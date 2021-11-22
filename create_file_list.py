@@ -18,9 +18,9 @@ elif os.name == 'posix':    # Mac or Linux
     delimiter = "/"
 
 # エクセルファイルの作成
-book = openpyxl.Workbook()      # 新規Bookの作成
-sheet = book.worksheets[0]      # シート設定
-sheet.title = SHEET_TITLE       # シートのタイトル設定
+book        = openpyxl.Workbook()     # 新規Bookの作成
+sheet       = book.worksheets[0]      # シート設定
+sheet.title = SHEET_TITLE             # シートのタイトル設定
 
 # 初期位置を設定
 row = ROW_INI
@@ -30,10 +30,11 @@ col = COL_INI
 pre_file = []
 
 # 同階層以下のフォルダ/ファイル一覧を取得
-files = glob.glob("**", recursive=True)
+f_list = glob.glob("**", recursive=True)
 
-for file in files:
-    file = file.split(delimiter)
+# 一覧を書き出す処理
+for file in f_list:
+    file = file.split(delimiter)    #取得した一覧をデリミタで分割し、リスト化
 
     # ファイルがdesktop.iniの場合は書き出さない
     if file[-1] != "desktop.ini":
@@ -48,24 +49,20 @@ for file in files:
         row += 1        # 次の行に移動
         col = COL_INI   # 列の位置を初期位置に移動
 
-print(sheet.max_row)
-
-
+# 枠線を引く処理
 for row in range(ROW_INI, sheet.max_row + 1):
     flag = 0
 
     for col in range(COL_INI, 10):
 
         if (sheet.cell(row=row, column=col).value != None):
-            sheet.cell(row=row, column=col).border = Border(top=Side(
-                style='thin', color='000000'), left=Side(style='thin', color='000000'))
+            sheet.cell(row=row, column=col).border = Border(top=Side(style='thin', color='000000'), left=Side(style='thin', color='000000'))
 
             if col != 1:
                 for col_i in range(col-1, 0, -1):
-                    sheet.cell(row=row, column=col_i).border = Border(
-                        left=Side(style='thin', color='000000'))
+                    sheet.cell(row=row, column=col_i).border = Border(left=Side(style='thin', color='000000'))
 
-            flag = 1
+            flag = 1    #
 
         elif (flag == 1):
             sheet.cell(row=row, column=col).border = Border(
@@ -81,6 +78,7 @@ for row in sheet:
 book.save(BOOK_TITLE)
 book.close()
 
+# TODO:書き出さない処理は別にする
 # TODO: 自分自身はファイルリストに含めない
 # TODO: oldファイルは含めない
 # TODO: 一番最後の行を含めない
