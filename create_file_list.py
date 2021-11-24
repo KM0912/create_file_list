@@ -50,10 +50,9 @@ for file in f_list:
 modules.draw_boader(sheet, ROW_INI, sheet.max_row, COL_INI, sheet.max_column)
 
 # 背景色
-fill = PatternFill(patternType='solid', fgColor='ffffff')
 for row in sheet:
     for cell in row:
-        sheet[cell.coordinate].fill = fill
+        sheet[cell.coordinate].fill = PatternFill(patternType='solid', fgColor='ffffff')
 
 # 保存 & 終了
 book.save(BOOK_TITLE)
@@ -64,5 +63,4 @@ book.close()
 # TODO: oldファイルは含めない
 # TODO: 一番最後の行を含めない
 # TODO:モジュール化する
-# TODO:モジュールを別ファイルに切り出す
 

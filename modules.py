@@ -16,10 +16,10 @@ def draw_boader (sheet, start_row, end_row, start_col, end_col) :
             if (sheet.cell(row=row, column=col).value != None):
                 sheet.cell(row=row, column=col).border = Border(top=Side(style='thin', color='000000'), left=Side(style='thin', color='000000'))
 
-                #　１列目でなければ
-                # if col != 1:
-                #     for col_i in range(col-1, 0, -1):
-                #         sheet.cell(row=row, column=col_i).border = Border(left=Side(style='thin', color='000000'))
+                #　空でないセルが１列目でなければ、左側のセルに左罫線を引いていく
+                if col != 1:
+                    for col_i in range(col-1, 0, -1):
+                        sheet.cell(row=row, column=col_i).border = Border(left=Side(style='thin', color='000000'))
 
                 cell_flag = RIGHT_CELL  # フォルダ名/ファイル名が記入されている列の罫線を引く処理が完了したので、フラグを更新
 
