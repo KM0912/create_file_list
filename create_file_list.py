@@ -11,14 +11,8 @@ SHEET_TITLE = settings.sheet_title      # シート名
 ROW_INI     = settings.row_ini          # 行の初期位置
 COL_INI     = settings.col_ini          # 列の初期位置
 
-
-
-
 # OSを判定し、ファイルパスの区切り文字を決定
-if os.name == "nt":         # Windows
-    delimiter = "¥"
-elif os.name == 'posix':    # Mac or Linux
-    delimiter = "/"
+delimiter = modules.get_delimiter()
 
 # エクセルファイルの作成
 book        = openpyxl.Workbook()     # 新規Bookの作成

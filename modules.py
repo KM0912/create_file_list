@@ -1,3 +1,4 @@
+import os
 from openpyxl.styles.borders import Border, Side
 
 # フォルダ名/ファイル名が記入されている列より左側か右側かを判定するためのフラグの値
@@ -25,3 +26,10 @@ def draw_boader (sheet, start_row, end_row, start_col, end_col) :
             # セルが空であり、フォルダ名/ファイル名が記入されている列より右側のセルの場合、上罫線のみを引く
             elif (cell_flag == RIGHT_CELL):
                 sheet.cell(row=row, column=col).border = Border(top=Side(style='thin', color='000000'))
+
+def get_delimiter () :
+    if os.name == "nt":         # Windows
+        return "¥"
+
+    elif os.name == 'posix':    # Mac or Linux
+        return "/"
