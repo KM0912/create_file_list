@@ -1,4 +1,5 @@
 import os
+import glob
 from openpyxl.styles.borders import Border, Side
 
 # フォルダ名/ファイル名が記入されている列より左側か右側かを判定するためのフラグの値
@@ -33,3 +34,30 @@ def get_delimiter () :
 
     elif os.name == 'posix':    # Mac or Linux
         return "/"
+
+def write_file_list (sheet, start_row, start_col, delimiter) :
+    row = start_row
+    col = start_col
+
+    # 比較用のリストを作成
+    pre_file = []
+
+    # 同階層以下のフォルダ/ファイル一覧を取得
+    f_list = glob.glob("**", recursive=True)
+
+    # 一覧を書き出す処理
+    for file in f_list:
+        file = file.split(delimiter)    #取得した一覧をデリミタで分割し、リスト化
+
+        # ファイルがdesktop.iniの場合は書き出さない
+        if file[-1] != "desktop.ini":
+            for i, f_name in enumerate(file):
+                if len(pre_file) == 0 or i >= len(pre_file) or file[i] != pre_file[i]:
+                    sheet.cell(row=row, column=col).value = f_name
+
+                col += 1    # 次の列に移動
+
+            pre_file = file
+
+            row += 1        # 次の行に移動
+            col = start_col # 列の位置を初期位置に移動
