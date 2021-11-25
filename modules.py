@@ -1,6 +1,7 @@
 import os
 import glob
 from openpyxl.styles.borders import Border, Side
+from openpyxl.styles import PatternFill
 
 # フォルダ名/ファイル名が記入されている列より左側か右側かを判定するためのフラグの値
 LEFT_CELL   = 0
@@ -61,3 +62,9 @@ def write_file_list (sheet, start_row, start_col, delimiter) :
 
             row += 1        # 次の行に移動
             col = start_col # 列の位置を初期位置に移動
+
+# 背景色を白にする処理
+def set_background_color (sheet) :
+    for row in sheet:
+        for cell in row:
+            sheet[cell.coordinate].fill = PatternFill(patternType='solid', fgColor='ffffff')
