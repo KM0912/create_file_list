@@ -2,31 +2,31 @@ import settings
 import openpyxl
 import modules
 
-# 定数
-BOOK_TITLE  = settings.book_title       # ファイル名
-SHEET_TITLE = settings.sheet_title      # シート名
-ROW_INI     = settings.row_ini          # 行の初期位置
-COL_INI     = settings.col_ini          # 列の初期位置
+# エクセルファイルの作成
+book_title  = settings.book_title   # ファイル名
+sheet_title = settings.sheet_title  # シート名
+book        = openpyxl.Workbook()   # 新規Bookの作成
+sheet       = book.worksheets[0]    # シート設定
+sheet.title = sheet_title           # シートのタイトル設定
+
+# セル開始位置
+start_row   = settings.start_row  # 行の初期位置
+start_col   = settings.start_col  # 列の初期位置
 
 # OSを判定し、ファイルパスの区切り文字を決定
 delimiter = modules.get_delimiter()
 
-# エクセルファイルの作成
-book        = openpyxl.Workbook()     # 新規Bookの作成
-sheet       = book.worksheets[0]      # シート設定
-sheet.title = SHEET_TITLE             # シートのタイトル設定
-
 # 一覧を書き出す処理
-modules.write_file_list(sheet, ROW_INI, COL_INI, delimiter)
+modules.write_file_list(sheet, start_row, start_col, delimiter)
 
 # 罫線を引く処理
-modules.draw_boader(sheet, ROW_INI, sheet.max_row, COL_INI, sheet.max_column)
+modules.draw_boader(sheet, start_row, sheet.max_row, start_col, sheet.max_column)
 
 # 背景色の設定
 modules.set_background_color(sheet)
 
 # 保存 & 終了
-book.save(BOOK_TITLE)
+book.save(book_title)
 book.close()
 
 # TODO:書き出さない処理は別にする
