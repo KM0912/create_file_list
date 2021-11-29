@@ -2,6 +2,7 @@ import os
 import glob
 from openpyxl.styles.borders import Border, Side
 from openpyxl.styles import PatternFill
+import settings
 
 # フォルダ名/ファイル名が記入されている列より左側か右側かを判定するためのフラグの値
 LEFT_CELL   = 0
@@ -29,6 +30,7 @@ def draw_boader (sheet, start_row, end_row, start_col, end_col) :
             elif (cell_flag == RIGHT_CELL):
                 sheet.cell(row=row, column=col).border = Border(top=Side(style='thin', color='000000'))
 
+# OSに対応したファイルパスのデリミタを返す関数
 def get_delimiter () :
     if os.name == "nt":         # Windows
         return "¥"
@@ -36,6 +38,15 @@ def get_delimiter () :
     elif os.name == 'posix':    # Mac or Linux
         return "/"
 
+
+# 除外リストに含まれているフォルダ名/ファイル名が書き出し対象に含まれているかチェックする処理
+def check_exclusion_file (path, delimiter, exclusion_list) :
+    path = path.split(delimiter)
+    check = (set(path) & set(exclusion_list)) != set()
+
+    return check
+
+# ファイル一覧を書き出す処理
 def write_file_list (sheet, start_row, start_col, delimiter) :
     row = start_row
     col = start_col
@@ -48,10 +59,12 @@ def write_file_list (sheet, start_row, start_col, delimiter) :
 
     # 一覧を書き出す処理
     for file in f_list:
-        file = file.split(delimiter)    #取得した一覧をデリミタで分割し、リスト化
+        is_exclusion_file = check_exclusion_file(file, delimiter, settings.exclusion_list)
+        if is_exclusion_file == True :
+            pass
+        else :
+            file = file.split(delimiter)    #取得した一覧をデリミタで分割し、リスト化
 
-        # ファイルがdesktop.iniの場合は書き出さない
-        if file[-1] != "desktop.ini":
             for i, f_name in enumerate(file):
                 if len(pre_file) == 0 or i >= len(pre_file) or file[i] != pre_file[i]:
                     sheet.cell(row=row, column=col).value = f_name
