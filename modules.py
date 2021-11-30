@@ -8,8 +8,8 @@ import settings
 # 罫線を引く処理
 def draw_boader (sheet, start_row, end_row, start_col, end_col) :
     # フォルダ名/ファイル名が記入されている列より左側か右側かを判定するためのフラグの値
-    LEFT_CELL   = 0
-    RIGHT_CELL  = 1
+    LEFT_CELL_FLG   = 0
+    RIGHT_CELL_FLG  = 1
 
     # 罫線のフォーマット
     b_top_left  = Border(top=Side(style='thin', color='000000'),    left=Side(style='thin', color='000000') )
@@ -17,24 +17,23 @@ def draw_boader (sheet, start_row, end_row, start_col, end_col) :
     b_left      = Border(                                           left=Side(style='thin', color='000000') )
 
     for row in range(start_row, end_row + 1):
+        cell_flag = LEFT_CELL_FLG   # フォルダ名/ファイル名が記入されている列より左側か右側かを判定するためのフラグ
 
-        cell_flag = LEFT_CELL   # フォルダ名/ファイル名が記入されている列より左側か右側かを判定するためのフラグ
         for col in range(start_col, end_col + 1):
-
-            # セルが空でなければ上罫線/左罫線を引く
+            # セルを取得
             cell = sheet.cell(row=row, column=col)
-            if (cell.value != None):
+
+            # セルが空 & その行のフォルダ名/ファイル名が記載されている列よりも左側の列
+            if cell.value == None and cell_flag == LEFT_CELL_FLG:
+                cell.border = b_left
+            
+            # セルが空でない
+            elif cell.value != None :
                 cell.border = b_top_left
+                cell_flag = RIGHT_CELL_FLG
 
-                #　空でないセルが１列目でなければ、左側のセルに左罫線を引いていく
-                if col != 1:
-                    for col_i in range(col-1, 0, -1):
-                        sheet.cell(row=row, column=col_i).border = b_left
-
-                cell_flag = RIGHT_CELL  # フォルダ名/ファイル名が記入されている列の罫線を引く処理が完了したので、フラグを更新
-
-            # セルが空であり、フォルダ名/ファイル名が記入されている列より右側のセルの場合、上罫線のみを引く
-            elif (cell_flag == RIGHT_CELL):
+            # セルが空 & その行のフォルダ名/ファイル名が記載されている列よりも右側の列
+            elif cell.value == None and cell_flag == RIGHT_CELL_FLG:
                 cell.border = b_top
 
 # OSに対応したファイルパスのデリミタを返す関数
@@ -49,9 +48,9 @@ def get_delimiter () :
 # 除外リストに含まれているフォルダ名/ファイル名が書き出し対象に含まれているかチェックする処理(完全一致)
 def check_exclusion_file (path, delimiter, exclusion_list) :
     path = path.split(delimiter)
-    check = (set(path) & set(exclusion_list)) != set()
+    is_exclusion_file = (set(path) & set(exclusion_list)) != set()
 
-    return check
+    return is_exclusion_file
 
 # ファイル一覧を書き出す処理
 def write_file_list (sheet, start_row, start_col, delimiter) :
