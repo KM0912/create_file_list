@@ -29,9 +29,6 @@ modules.set_background_color(sheet)
 book.save(book_title)
 book.close()
 
-# TODO:書き出さない処理は別にする
 # TODO: 自分自身はファイルリストに含めない
-# TODO: oldファイルは含めない
 # TODO: 一番最後の行を含めない
-# TODO:モジュールのリファクタリング
 # TODO:列幅調整
