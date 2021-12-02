@@ -89,3 +89,12 @@ def set_background_color (sheet) :
     for row in sheet:
         for cell in row:
             sheet[cell.coordinate].fill = PatternFill(patternType='solid', fgColor='ffffff')
+
+# 列幅調整
+def set_column_width (sheet) :
+    for col in range(1, sheet.max_column) :
+        col_letter = sheet.cell(row=1,column=col).column_letter
+        sheet.column_dimensions[col_letter].width = settings.col_widht
+
+    col_letter = sheet.cell(row=1,column=sheet.max_column).column_letter
+    sheet.column_dimensions[col_letter].width = settings.end_col_widht
