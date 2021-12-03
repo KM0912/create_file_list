@@ -66,23 +66,24 @@ def write_file_list (sheet, start_row, start_col, delimiter) :
     # 一覧を書き出す処理
     for file in f_list:
 
-        # 除外リストに含まれているフォルダ名/ファイル名の場合は書き出しせずに終了
+        # 除外リストに含まれているフォルダ名/ファイル名の場合は書き出しせずに次のループへ
         is_exclusion_file = check_exclusion_file(file, delimiter, settings.exclusion_list)
         if is_exclusion_file == True :
-            pass
-        else :
-            file = file.split(delimiter)    #取得した一覧をデリミタで分割し、リスト化
+            continue
 
-            for i, f_name in enumerate(file):
-                if len(pre_file) == 0 or i >= len(pre_file) or file[i] != pre_file[i]:
-                    sheet.cell(row=row, column=col).value = f_name
+        #ファイルパスをデリミタで分割し、リスト化
+        # ex) "test_folder1/test_folder1_1/test_file" -> [test_folder1, test_folder1_1, test_file]
+        file = file.split(delimiter)
 
-                col += 1    # 次の列に移動
+        for i, f_name in enumerate(file):
+            if len(pre_file) == 0 or i >= len(pre_file) or file[i] != pre_file[i]:
 
-            pre_file = file
+            col += 1    # 次の列に移動
 
-            row += 1        # 次の行に移動
-            col = start_col # 列の位置を初期位置に移動
+        pre_file = file
+
+        row += 1        # 次の行に移動
+        col = start_col # 列の位置を初期位置に移動
 
 # 背景色を白にする処理
 def set_background_color (sheet) :
