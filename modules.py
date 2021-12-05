@@ -39,7 +39,7 @@ def draw_boader (sheet, start_row, end_row, start_col, end_col) :
 # OSに対応したファイルパスのデリミタを返す関数
 def get_delimiter () :
     if os.name == "nt":         # Windows
-        return "¥"
+        return "\\"
 
     elif os.name == 'posix':    # Mac or Linux
         return "/"
@@ -77,6 +77,7 @@ def write_file_list (sheet, start_row, start_col, delimiter) :
 
         for i, f_name in enumerate(file):
             if len(pre_file) == 0 or i >= len(pre_file) or file[i] != pre_file[i]:
+                    sheet.cell(row=row, column=col).value = f_name
 
             col += 1    # 次の列に移動
 
