@@ -12,9 +12,10 @@ def draw_boader (sheet, start_row, end_row, start_col, end_col) :
     RIGHT_CELL_FLG  = 1
 
     # 罫線のフォーマット
-    b_top_left  = Border(top=Side(style='thin', color='000000'),    left=Side(style='thin', color='000000') )
-    b_top       = Border(top=Side(style='thin', color='000000')                                             )
-    b_left      = Border(                                           left=Side(style='thin', color='000000') )
+    b_top_left  = Border(top=Side(style='thin', color='000000'),                                                left=Side(style='thin', color='000000') )
+    b_top       = Border(top=Side(style='thin', color='000000')                                                                                         )
+    b_left      = Border(                                                                                       left=Side(style='thin', color='000000') )
+    b_bottom    = Border(                                           bottom=Side(style='thin', color='000000'),  left=Side(style='thin', color='000000') )
 
     for row in range(start_row, end_row + 1):
         cell_flag = LEFT_CELL_FLG   # フォルダ名/ファイル名が記入されている列より左側か右側かを判定するためのフラグ
@@ -35,6 +36,11 @@ def draw_boader (sheet, start_row, end_row, start_col, end_col) :
             # セルが空 & その行のフォルダ名/ファイル名が記載されている列よりも右側の列
             elif cell.value == None and cell_flag == RIGHT_CELL_FLG:
                 cell.border = b_top
+
+    for col in range(start_col, end_col + 1):
+        cell = sheet.cell(row=end_row + 1, column=col)
+        cell.border = b_top
+            
 
 # OSに対応したファイルパスのデリミタを返す関数
 def get_delimiter () :

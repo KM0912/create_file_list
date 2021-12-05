@@ -19,11 +19,11 @@ delimiter = modules.get_delimiter()
 # 一覧を書き出す処理
 modules.write_file_list(sheet, start_row, start_col, delimiter)
 
-# 罫線を引く処理
-modules.draw_boader(sheet, start_row, sheet.max_row, start_col, sheet.max_column)
-
 # 背景色の設定
 modules.set_background_color(sheet)
+
+# 罫線を引く処理
+modules.draw_boader(sheet, start_row, sheet.max_row, start_col, sheet.max_column)
 
 # 列幅調整
 modules.set_column_width(sheet)
@@ -33,6 +33,5 @@ book.save(book_title)
 book.close()
 
 # TODO: 自分自身はファイルリストに含めない
-# TODO: 一番最後の行を含めない
 # TODO:列幅調整
 # TODO:class化
