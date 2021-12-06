@@ -31,7 +31,3 @@ modules.set_column_width(sheet)
 # 保存 & 終了
 book.save(book_title)
 book.close()
-
-# TODO: 自分自身はファイルリストに含めない
-# TODO:列幅調整
-# TODO:class化

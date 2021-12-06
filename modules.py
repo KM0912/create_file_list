@@ -15,7 +15,6 @@ def draw_boader (sheet, start_row, end_row, start_col, end_col) :
     b_top_left  = Border(top=Side(style='thin', color='000000'),                                                left=Side(style='thin', color='000000') )
     b_top       = Border(top=Side(style='thin', color='000000')                                                                                         )
     b_left      = Border(                                                                                       left=Side(style='thin', color='000000') )
-    b_bottom    = Border(                                           bottom=Side(style='thin', color='000000'),  left=Side(style='thin', color='000000') )
 
     for row in range(start_row, end_row + 1):
         cell_flag = LEFT_CELL_FLG   # フォルダ名/ファイル名が記入されている列より左側か右側かを判定するためのフラグ
@@ -67,7 +66,7 @@ def write_file_list (sheet, start_row, start_col, delimiter) :
     pre_file = []
 
     # 同階層以下のフォルダ/ファイル一覧を取得
-    f_list = glob.glob("**", recursive=True)
+    f_list = glob.glob(settings.target_folder + "/**", recursive=True)
 
     # 一覧を書き出す処理
     for file in f_list:
