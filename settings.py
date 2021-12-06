@@ -11,5 +11,8 @@ end_col_widht   = 30    # 最後の列の列幅
 
 # 書き出し対象外にするフォルダ名/ファイル名のリスト
 exclusion_list = [
+    "settings.py",          # 本ファイル
+    "modules.py",           # 関数を定義しているファイル
+    "create_file_list.py",  # メイン処理のファイル
     "desktop.ini",
 ]
